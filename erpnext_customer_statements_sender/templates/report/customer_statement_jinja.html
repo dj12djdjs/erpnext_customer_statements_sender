@@ -191,7 +191,7 @@
 
 			<h2 class="text-center">{{ _("Statement of Account") }}</h2>
 			<h4 class="text-center">
-					{{ filters['party'][0] }}
+					{{ filters['customer'] }}
 			</h4>
 
 			<h6>
@@ -203,10 +203,8 @@
 			</h6>
 
 			<h5 class="text-center">
-				Statement for period:
-				{{ format_value(filters['from_date'], 'Date') }}
-				{{ _("to") }}
-				{{ format_value(filters['to_date'], 'Date') }}
+				Statement as of:
+				{{ format_value(filters['report_date'], 'Date') }}
 			</h5>
 			<hr>
 
@@ -227,7 +225,7 @@
 							<td>
 							{{ format_value(row.posting_date, 'Date') }}</td>
 							<td>
-								{% if (row.voucher_type == "Sales Invoice") and (row.credit > 0) %}
+								{% if (row.voucher_type == "Sales Invoice") and (row.invoiced < 0) %}
 									{{ _("Credit Note") }}
 								{% else %}
 									{{ row.voucher_type }}
@@ -241,17 +239,17 @@
 								</span>
 								</td>
 								<td style="text-align: right">
-									{{ frappe.utils.fmt_money(row.debit - row.credit, currency=currency) }}</td>
+									{{ frappe.utils.fmt_money(row.invoiced, currency=currency) }}</td>
 						{% else %}
 							<td></td>
 							<td></td>
 							<td><b>{{ row.account | replace("'","") }}</b></td>
 							<td style="text-align: right">
-								{{ frappe.utils.fmt_money(row.debit - row.credit, currency=currency) }}
+								{{ frappe.utils.fmt_money(row.invoiced, currency=currency) }}
 							</td>
 						{% endif %}
 							<td style="text-align: right">
-								{{ frappe.utils.fmt_money(row.balance, currency=currency) }}
+								{{ frappe.utils.fmt_money(row.outstanding, currency=currency) }}
 							</td>
 						</tr>
 					{% endfor %}

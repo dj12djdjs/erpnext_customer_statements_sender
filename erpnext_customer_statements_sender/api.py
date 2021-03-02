@@ -122,7 +122,20 @@ def get_report_content(company, customer_name, from_date=None, to_date=None):
 					'to_date': to_date,
 					'group_by': 'Group by Voucher (Consolidated)'}
 
+	report_gl = frappe.get_doc('Report', 'Accounts Receivable')
+	report_gl_filters = {
+		'company': company,
+		'customer': customer_name,
+		'ageing_based_on': 'Posting Date',
+		'report_date': to_date,
+		'range1': 30,
+		'range2': 60,
+		'range3': 90,
+		'range4': 120
+	}
+
 	columns_gl, data_gl = report_gl.get_data(limit=500, user = "Administrator", filters = report_gl_filters, as_dict=True)
+#	return {'columns': columns_gl, 'data': data_gl}
 
 	# Add serial numbers
 	columns_gl.insert(0, frappe._dict(fieldname='idx', label='', width='30px'))
@@ -207,7 +220,7 @@ def get_billing_address(customer):
 									FROM `tabCustomer` AS tab_cus
 										INNER JOIN `tabDynamic Link` as tab_dyn ON tab_dyn.link_name = tab_cus.name AND tab_dyn.link_doctype = 'Customer'
 										INNER JOIN `tabAddress` as tab_add ON tab_dyn.parent = tab_add.name AND tab_dyn.parenttype = 'Address'
-									WHERE tab_cus.name = 'Spar' AND tab_add.address_type = 'Billing') AS t_billing_add
+									WHERE tab_cus.name = '400300231' AND tab_add.address_type = 'Billing') AS t_billing_add
 							GROUP BY customer""", as_dict=True)
 	if addresses and len(addresses)>0:
 		del(addresses[0]['preferred_address'])
