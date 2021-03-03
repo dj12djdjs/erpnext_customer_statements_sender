@@ -34,6 +34,7 @@
   {
    "fieldname": "send_customer_statements",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Send All Customer Statements"
   },
   {
@@ -68,12 +69,14 @@
   {
    "fieldname": "get_customer_emails",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Refresh Customer Preview"
   },
   {
    "description": "The list of active customers below shows who will receive statements when this utility is run. You can tick the \"Disable Sending of Customer Statements\" checkbox on the Customer record to skip sending Statements to a particular customer",
    "fieldname": "recipients",
    "fieldtype": "Table",
+   "hidden": 1,
    "label": "Customers",
    "options": "Customer Statements Sender Email"
   },
@@ -160,23 +163,26 @@
   {
    "fieldname": "from_date_for_all_customers",
    "fieldtype": "Date",
+   "hidden": 1,
    "label": "From Date for all customers"
   },
   {
    "default": "Today",
    "fieldname": "to_date_for_all_customers",
    "fieldtype": "Date",
+   "hidden": 1,
    "label": "To Date for all customers"
   },
   {
    "fieldname": "enqueue_sending_statements",
    "fieldtype": "Button",
+   "hidden": 1,
    "label": "Enqueue Sending Statements"
   }
  ],
  "issingle": 1,
- "modified": "2020-09-09 14:58:27.614011",
- "modified_by": "Administrator",
+ "modified": "2021-03-03 09:44:52.447216",
+ "modified_by": "ds@partsupinc.com",
  "module": "Customer Statements",
  "name": "Customer Statements Sender",
  "owner": "Administrator",
