@@ -142,6 +142,15 @@ def get_report_content(company, customer_name, from_date=None, to_date=None):
 	for i in range(len(data_gl)):
 		data_gl[i]['idx'] = i+1
 
+	# Fix string values
+	for i in range(len(data_gl)):
+		if not data_gl[i].credit_note:
+			data_gl[i].credit_note = 0.00
+		if not data_gl[i].paid:
+			data_gl[i].paid = 0.00
+		if not data_gl[i].invoiced:
+			data_gl[i].invoiced = 0.00
+
 	# Get ageing summary report content
 	data_ageing = []
 	labels_ageing = []
