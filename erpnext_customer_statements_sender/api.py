@@ -151,6 +151,9 @@ def get_report_content(company, customer_name, from_date=None, to_date=None):
 		if not data_gl[i].invoiced:
 			data_gl[i].invoiced = 0.00
 
+		if data_gl[i].paid < 0:
+			data_gl[i].paid = abs(data_gl[i].paid)
+
 	# Get ageing summary report content
 	data_ageing = []
 	labels_ageing = []
