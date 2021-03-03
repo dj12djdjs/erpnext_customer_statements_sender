@@ -213,9 +213,10 @@
 					<tr>
 						<th class="text-center" style="width: 12%">{{ _("Date") }}</th>
 						<th class="text-center" style="width: 11%">{{ _("Type") }}</th>
-						<th class="text-center" style="width: 43%">{{ _("Reference") }}</th>
-						<th class="text-center" style="width: 17%">{{ _("Amount") }}</th>
-						<th class="text-center" style="width: 17%">{{ _("Balance") }}</th>
+						<th class="text-center" style="width: 30%">{{ _("Reference") }}</th>
+						<th class="text-center" style="width: 17%">{{ _("Debit") }}</th>
+						<th class="text-center" style="width: 17%">{{ _("Credit") }}</th>
+						<th class="text-center" style="width: 17%">{{ _("Outstanding") }} </td>
 					</tr>
 				</thead>
 				<tbody>
@@ -225,32 +226,57 @@
 							<td>
 							{{ format_value(row.posting_date, 'Date') }}</td>
 							<td>
-								{% if (row.voucher_type == "Sales Invoice") and (row.invoiced < 0) %}
+								{% if (row.voucher_type == "Sales Invoice") and (row.credit_note > 0) %}
 									{{ _("Credit Note") }}
 								{% else %}
 									{{ row.voucher_type }}
 								{% endif %}
 							</td>
-							<td>
+								<td>
 								{{ row.voucher_no }}
 								<span style="font-size:9px;">
 									<br>{{ _("Remarks") }}:<br>
 										{{ row.remarks | replace("\n","<br>") }}
 								</span>
 								</td>
+								{% if row.invoiced > 0 %}
+									<td style="text-align: right">
+										{{ frappe.utils.fmt_money(row.invoiced, currency=currency) }}
+									</td>
+									<td style="text-align: right">
+										{{ frappe.utils.fmt_money(0.00, currency=currency) }}
+									</td>
+								{% else %}
+									<td style="text-align: right">
+										{{ frappe.utils.fmt_money(0.00, currency=currency) }}
+									</td>
+									{% if row.credit_note > 0 %}
+										<td style="text-align: right">
+											{{ frappe.utils.fmt_money(row.credit_note, currency=currency) }}
+										</td>
+									{% else  %}
+										<td style="text-align: right">
+											{{ frappe.utils.fmt_money(row.paid, currency=currency) }}
+										</td>
+									{% endif %}
+								{% endif %}
 								<td style="text-align: right">
-									{{ frappe.utils.fmt_money(row.invoiced, currency=currency) }}</td>
+									{{ frappe.utils.fmt_money(row.outstanding, currency=currency) }}
+								</td>
 						{% else %}
 							<td></td>
 							<td></td>
-							<td><b>{{ row.account | replace("'","") }}</b></td>
+							<td><b>Total</b></td>
 							<td style="text-align: right">
 								{{ frappe.utils.fmt_money(row.invoiced, currency=currency) }}
 							</td>
-						{% endif %}
+							<td style="text-align: right">
+								{{ frappe.utils.fmt_money(row.credit_note + row.paid, currency=currency) }}
+							</td>
 							<td style="text-align: right">
 								{{ frappe.utils.fmt_money(row.outstanding, currency=currency) }}
 							</td>
+						{% endif %}
 						</tr>
 					{% endfor %}
 				</tbody>
