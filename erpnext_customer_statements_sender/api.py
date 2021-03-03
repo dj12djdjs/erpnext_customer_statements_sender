@@ -209,6 +209,7 @@ def get_billing_address(customer):
 	}
 	addresses = frappe.db.sql("""SELECT
 								customer,
+								customer_name,
 								MAX(priority) AS preferred_address,
 								address_line1,
 								address_line2,
@@ -220,6 +221,7 @@ def get_billing_address(customer):
 							FROM
 								(SELECT
 										tab_cus.name AS 'customer',
+										tab_cus.customer_name AS 'customer_name',
 										tab_add.name AS 'address_title',
 										IFNULL(tab_add.is_primary_address, 0) AS 'priority',
 										tab_add.address_line1,
